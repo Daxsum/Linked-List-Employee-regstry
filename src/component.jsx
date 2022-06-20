@@ -1,5 +1,6 @@
+/*eslint-disable-next-line*/
 import React, {  useState } from 'react';
-/*eslint-disable no-unused-expressions*/
+import data from './j.json'
 import LinkedList from './Linked_List';
 
 
@@ -7,123 +8,172 @@ const ll=new LinkedList();
 function Ui () {
   const [FName,setFName]=useState('')
   const [LName,setLName]=useState('')
-  
+  const [NO,setNO]=useState(0)
+  const [Add,setAdd]=useState([])
   const [Salary,setSalary]=useState('')
   const [string,setString]=useState('')
   const [stringL,setStringL]=useState('')
-  
   const [stringS,setStringS]=useState('')
-  const button= <button onClick={()=>{remove(0)}} type="submit" class="btn btn-danger">Delete</button>
-  const [Array,setArray] =useState([])
+  const [contacts, setContacts] = useState(data);
+  const [addFormData, setAddFormData] = useState({
+    fullName: "",
+    Profession: "",
+    Salary: "",
+    index: "",
+  });
+  const handleAddFormChange = (event) => {
+    event.preventDefault();
 
-const handleevent=(e)=>{
-setString(e.target.value)
+    const fieldName = event.target.getAttribute("name");
+    const fieldValue = event.target.value;
+    const newFormData = { ...addFormData };
+    newFormData[fieldName] = fieldValue;
+    
+    setAddFormData(newFormData);
+  };
 
-// console.log(string)
-}
-const handleevent2=(e)=>{
-setStringL(e.target.value)
+  const handleAddFormSubmit = (event) => {
+    event.preventDefault();
+    ll.insertLast(addFormData.index)//////adding value to linked list
+    ll.insertLast(addFormData.fullName)//////adding value to linked list
+    ll.insertLast(addFormData.Profession)//////adding value to linked list
+    ll.insertLast(addFormData.Salary)//////adding value to linked list
+    ll.printListData()
+    const newContact = {
+   
+      fullName: addFormData.fullName,
+      Profession: addFormData.Profession,
+      Salary: addFormData.Salary,
+      index: addFormData.index,
+    };
 
-// console.log(string)
-}
+    const newContacts = [...contacts, newContact];
+    setContacts(newContacts);
 
-const handleevent3=(e)=>{
-setStringS(e.target.value)
+  };
+  const handleDeleteClick = (contactId) => {
+    const newContacts = [...contacts];
 
-// console.log(string)
-}
-const remove=(i)=>{
-  if (i=0){
-    ll.removeAt(0)
-    ll.removeAt(1)
-    ll.removeAt(2)
-  }else if (i=3){
-    ll.removeAt(3)
-    ll.removeAt(4)
-    ll.removeAt(5)
+    const inde = contacts.findIndex((contact) => contact.id === contactId);
+
+    newContacts.splice(inde, 1);
+    console.log('after removing')
+    console.log(inde)
+    ll.removeAt(inde)
+    ll.removeAt(inde+1)
+    ll.removeAt(inde+2)
+    
+    ll.printListData()
+    setContacts(newContacts);
+  };
+  const handleclear=(contactId)=>{
+    const newContacts = [...contacts];
+
+    const inde = contacts.findIndex((contact) => contact.id === contactId);
+
+    newContacts.splice(inde, inde);
+
   }
-// ll.removeAt(1)
-// ll.removeAt(2)
-
-
-setFName ('')
-setLName (ll.getAt(1))
-setSalary (ll.getAt(2))
-}
-let L=[]
-const submit=(e)=>{
-  e.preventDefault();
-const value=string;
-const value2=stringL;
-
-const value3=stringS;
-
-ll.insertFirst(value)
-ll.insertLast(value2)
-ll.insertLast(value3)
-
-
-
-setFName (ll.getAt(0))
-setLName (ll.getAt(1))
-setSalary (ll.getAt(2))
-L.push(<td>{FName}</td>)
-L.push(<td>{LName}</td>)
-L.push(<td>{LName}</td>)
-L.push(<button>del</button>)
-setArray(...Array,L[0])
-
-
-console.log(FName)
-
-
-}
+  // const [stringNO,setStringNO]=useState('')
+  
 
  
+// const handleevent=(e)=>{
+// const v=(e.target.value)
+// return v
+// }
+// const handleevent2=(e)=>{
+// setStringL(e.target.value)
 
 
+// }
+
+// const handleevent3=(e)=>{
+// setStringS(e.target.value)
+// return e.target.value
+
+// }
+// const handleevent4=(e)=>{
+// setNO(e.target.value)
 
 
+// }
+// const remove=()=>{
+//   setAdd('')
 
+//     ll.removeAt(0)
+//     ll.removeAt(0)
+//     ll.removeAt(0)
+//   setAdd(...Add)
+//   setFName (ll.getAt(0))
+//   setLName (ll.getAt(1))
+//   setSalary (ll.getAt(2))
+// }
+
+
+// const submit=(e)=>{
+//   e.preventDefault();
+//   let valueName=string;
+//   let valueLast=stringL;
+//   let valueSalary=stringS;
+//   let valueNO=NO;
   
+//   ll.insertLast(valueName)
+//   ll.insertLast(valueLast)
+//   ll.insertLast(valueSalary)
+//   setFName (ll.getAt(0))
+//   setLName (ll.getAt(1))
+//   setSalary (ll.getAt(2))
+//   console.log(valueNO)
+//   // console.log(FName)
+//   setAdd([...Add,{id:valueNO ,name:FName,profession:LName,salary:Salary}])}
+
+
+
 
     return ( <div className='back'>
       <nav style={{backgroundColor:"#252625"}}>
 
- <h1> <span class="badge bg-secondary">Employee Regstery</span></h1>
+ <h1> <span class="badge bg-secondary">Employee Registry</span></h1>
       </nav>
      
    
       <div>
-      <form class="row gx-3 gy-2 align-items-center">
+      <form class="row gx-2 gy-3 align-items-center">
   <div class="col-sm-3">
     
-    <label  for="specificSizeInputName">Name</label>
-    <input style={{width:"200px"}} type="text" class="form-control" id="specificSizeInputName" placeholder="Jane Doe" onChange={handleevent}/>
+    <label  for="specificSizeInputName">Full Name</label>
+    <input name='fullName' style={{width:"200px"}} type="text" className="form-control" id="specificSizeInputName" placeholder="Jane Doe" onChange={handleAddFormChange}/>
   </div>
   <div class="col-sm-3">
     
-    <label  for="specificSizeInputName">Name</label>
-    <input style={{width:"200px"}} type="text" class="form-control" id="specificSizeInputName" placeholder="Jane Doe"  onChange={handleevent2}/>
+    <label  for="specificSizeInputName">Profession</label>
+    <input name='Profession' style={{width:"200px"}} type="text" class="form-control" id="specificSizeInputName" placeholder="Engineer"  onChange={handleAddFormChange}/>
   </div>
   <div class="col-sm-3">
     
-    <label  for="specificSizeInputName">Name</label>
-    <input style={{width:"200px",innerHeight:"20px"}} type="text" class="form-control" id="specificSizeInputName" placeholder="Jane Doe"onChange={handleevent3}/>
+    <label  for="specificSizeInputName">Salary</label>
+    <input name='Salary' style={{width:"200px",innerHeight:"20px"}} type="text" class="form-control" id="specificSizeInputName" placeholder="$10000"onChange={handleAddFormChange}/>
   </div>
-
-  
- 
 
   <div class="col-auto">
     
   </div>
+  <div class="col-sm-3">
+    
+    <label  for="specificSizeInputName">Index</label>
+    <input name='index' style={{width:"100px"}} type="number" class="form-control" id="specificSizeInputName" placeholder="1" onChange={handleAddFormChange}/>
+  </div>
   <div class="col-auto">
-    <button onClick={submit} type="submit" class="btn btn-primary">Submit</button>
+    <button onClick={handleAddFormSubmit} type="submit" class="btn btn-primary">Submit</button>
+    
+  </div>
+  <div class="col-auto">
+  <button onClick={handleclear} type="submit" class="btn btn-warning">Clear</button>
+    
   </div>
 </form>
-     
-       
+         
 
         <table className="table">
   <thead>
@@ -136,71 +186,33 @@ console.log(FName)
     </tr>
   </thead>
   <tbody>
-    <tr className='table-dark'>
-      <th scope="row">1</th>
-     
-      <td>{FName}</td>
-      <td>{LName}</td>
-      <td>{Salary}</td>
-      <td> <button onClick={()=>{remove(0)}} type="submit" class="btn btn-danger">Delete</button></td>
-     
-    </tr>
-    <tr className='table-dark'>
-      <th scope="row">1</th>
-     
-      <td>{FName}</td>
-      <td>{LName}</td>
-      <td>{Salary}</td>
-      <td> <button onClick={()=>{remove(3)}} type="submit" class="btn btn-danger">Delete</button></td>
-     
-    </tr>    
-    <tr className='table-dark'>
-      <th scope="row">1</th>
-     
-      <td>{FName}</td>
-      <td>{LName}</td>
-      <td>{Salary}</td>
-      <td> <button onClick={()=>{remove(6)}} type="submit" class="btn btn-danger">Delete</button></td>
-     
-    </tr>
-    <tr className='table-dark'>
-      <th scope="row">1</th>
-     
-      <td>{FName}</td>
-      <td>{LName}</td>
-      <td>{Salary}</td>
-      <td> <button onClick={()=>{remove(9)}} type="submit" class="btn btn-danger">Delete</button></td>
-     
-    </tr>
-    <tr className='table-dark'>
-      <th scope="row">1</th>
-     
-      <td>{FName}</td>
-      <td>{LName}</td>
-      <td>{Salary}</td>
-      <td> <button onClick={()=>{remove(12)}} type="submit" class="btn btn-danger">Delete</button></td>
-     
-    </tr>
-    <tr className='table-dark'>
-      <th scope="row">1</th>
-     
-      <td>{FName}</td>
-      <td>{LName}</td>
-      <td>{Salary}</td>
-      <td> <button onClick={()=>{remove(15)}} type="submit" class="btn btn-danger">Delete</button></td>
-     
-    </tr>
-    <tr className='table-dark'>
-      <th scope="row">1</th>
-     
-      <td>{FName}</td>
-      <td>{LName}</td>
-      <td>{Salary}</td>
-      <td> <button onClick={()=>{remove(18)}} type="submit" class="btn btn-danger">Delete</button></td>
-     
-    </tr>
-  </tbody>
-</table>
+  
+   {/* {Add.map((name)=>(
+     <tr key={name.id}  className='table-dark'>
+      <td></td>
+      <td>{name.name}</td>
+      <td>{name.profession}</td>
+      <td>{name.salary}</td>
+      </tr>
+      
+    ))} */}
+       {contacts.map((contact) => (
+         <tr>
+      <td>{contact.index}</td>
+      <td>{contact.fullName}</td>
+      <td>{contact.Profession}</td>
+      <td>{contact.Salary}</td>
+      <td><button onClick={()=>{handleDeleteClick(contact.id)}} type="submit" class="btn btn-danger">Delete</button></td>
+      
+
+
+
+        </tr>
+       ))}
+               
+      </tbody>
+    </table>
+ 
 
 
       </div>

@@ -92,7 +92,7 @@ class Node {
     // Remove at index
     removeAt(index) {
       if (index > 0 && index > this.size) {
-        return "";
+        return ;
       }
   
       let current = this.head;
